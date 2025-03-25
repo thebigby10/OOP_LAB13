@@ -60,7 +60,9 @@ public class Customer {
         return random.getRandomNumber().toString();
     }
 
-
+    public String getPassword(){
+        return password;
+    }
     public String getUserID() {
         return userID;
     }
