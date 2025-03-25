@@ -6,7 +6,7 @@ public class Flight {
     private final String flightNumber;
     private final String fromCity;
     private final String toCity;
-    private final int availableSeats;
+    private int availableSeats;
     private final String gate;
     private LocalDateTime departureTime;
     private List<Customer> registeredCustomers;
@@ -19,7 +19,9 @@ public class Flight {
         this.gate = gate;
         this.registeredCustomers = new ArrayList<>();
     }
-
+    public void setAvailableSeats(int availableSeats){
+        this.availableSeats = availableSeats;
+    }
     public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
