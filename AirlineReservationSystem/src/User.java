@@ -1,8 +1,4 @@
-/*
- * This class is intended to be the main class for this Project. All necessary methods are getting calls from this class.
- *
- *
- */
+
 
 import java.util.ArrayList;
 import java.util.List;

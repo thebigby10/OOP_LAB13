@@ -108,4 +108,9 @@ public class Customer {
     public void setAge(int age) {
         this.age = age;
     }
+
+    public List<Flight> getFlightsRegisteredByUser() {
+        return this.flightsRegisteredByUser;
+    }
+
 }
