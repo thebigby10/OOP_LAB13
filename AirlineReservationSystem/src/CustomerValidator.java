@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class CustomerValidator {
 
     public boolean isEmailUnique(String email, List<Customer> customerCollection) {
