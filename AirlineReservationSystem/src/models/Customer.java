@@ -74,6 +74,4 @@ public class Customer {
     private String generateUniqueUserID() {
         return UUID.randomUUID().toString();
     }
-
-    // Getters and Setters
 }
