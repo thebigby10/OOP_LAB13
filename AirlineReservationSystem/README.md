@@ -23,3 +23,6 @@
 #### RolesAndPermissions class related refactoing
 - seperate RolesAndPermissions classes into RoleManager and PermissionManager
 - refactor RolesAndPermissions to use RoleManager and PermissionManager
+
+#### Remaining refactor to ensure the behavour is unchagned
+- 
