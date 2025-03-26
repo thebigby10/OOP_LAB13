@@ -5,41 +5,52 @@ public class Main {
     public static void main(String[] args) {
         int countNumOfUsers = 1;
         RolesAndPermissions r1 = new RolesAndPermissions();
-        Flight f1 = new Flight();
-        FlightScheduler flightScheduler = new FlightScheduler();  // Create instance of FlightScheduler
-        FlightReservation bookingAndReserving = new FlightReservation();
-        Customer c1 = new Customer();
-        
-        // Scheduling a flight using the FlightScheduler class
-        f1.setDepartureTime(flightScheduler.scheduleFlight(2));  // Schedule flight 2 days from now
-        System.out.println("Flight scheduled with departure time: " + f1.getDepartureTime());
-
+        FlightManager flightManager = new FlightManager();
+        FlightReservation flightReservation = new FlightReservation();
+        Customer customerManager = new Customer();
         Scanner read = new Scanner(System.in);
 
-        // Initial greeting and instructions
+        // Initialize some flight data
+        Flight flight1 = new Flight(RandomUtils.generateRandomFlightNumber(), "New York", "Los Angeles", RandomUtils.generateRandomSeats(), "G7");
+        flightManager.addFlight(flight1);
+
+        // Initialize the customer collection
+        List<Customer> customers = Customer.getCustomersCollection();
+
+        // Display the main menu
         System.out.println("\n\t\t\t\t\t+++++++++++++ Welcome to BAV AirLines +++++++++++++\n\nTo Further Proceed, Please enter a value.");
         System.out.println("\n***** Default Username && Password is root-root ***** Using Default Credentials will restrict you to just view the list of Passengers....\n");
         displayMainMenu();
         int desiredOption = read.nextInt();
-        
+
         while (desiredOption < 0 || desiredOption > 8) {
             System.out.print("ERROR!! Please enter value between 0 - 8. Enter the value again :\t");
             desiredOption = read.nextInt();
         }
 
+        // Main logic
         do {
             Scanner read1 = new Scanner(System.in);
 
             // Option 1: Login as Admin
             if (desiredOption == 1) {
-                adminLogin(r1, c1, read1, desiredOption);
-            } else if (desiredOption == 2) {
+                adminLogin(r1, read1, flightManager, flightReservation, customerManager);
+            }
+            // Option 2: Register Admin
+            else if (desiredOption == 2) {
                 adminRegistration(r1, read1, countNumOfUsers);
-            } else if (desiredOption == 3) {
-                passengerLogin(r1, bookingAndReserving, c1, read1);
-            } else if (desiredOption == 4) {
-                c1.addNewCustomer();
-            } else if (desiredOption == 5) {
+            }
+            // Option 3: Passenger Login
+            else if (desiredOption == 3) {
+                passengerLogin(r1, flightManager, flightReservation, read1);
+            }
+            // Option 4: Register Passenger
+            else if (desiredOption == 4) {
+                Customer newCustomer = customerManager.addNewCustomer(read1);
+                System.out.println("Passenger registered successfully: " + newCustomer.getName());
+            }
+            // Option 5: Display User Manual
+            else if (desiredOption == 5) {
                 manualInstructions();
             }
 
@@ -50,36 +61,29 @@ public class Main {
                 System.out.print("ERROR!! Please enter value between 0 - 8. Enter the value again :\t");
                 desiredOption = read1.nextInt();
             }
-        } while (desiredOption != 0); // Exit the program
 
+        } while (desiredOption != 0); // Exit the program
     }
 
-    // Admin Login Method
-    static void adminLogin(RolesAndPermissions r1, Customer c1, Scanner read1, int desiredOption) {
-        // Default credentials
-        String[][] adminUserNameAndPassword = new String[10][2];
-        adminUserNameAndPassword[0][0] = "root";
-        adminUserNameAndPassword[0][1] = "root";
-
+    // Admin Login
+    static void adminLogin(RolesAndPermissions r1, Scanner read1, FlightManager flightManager, FlightReservation flightReservation, CustomerManager customerManager) {
         System.out.print("\nEnter the UserName to login to the Management System: ");
         String username = read1.nextLine();
         System.out.print("Enter the Password to login to the Management System: ");
         String password = read1.nextLine();
         System.out.println();
 
-        if (r1.isPrivilegedUserOrNot(username, password) == -1) {
-            System.out.println("ERROR! Unable to login. Try creating new credentials or register by pressing 4.");
-        } else if (r1.isPrivilegedUserOrNot(username, password) == 0) {
-            System.out.println("You've standard privileges to access the data. You can only view customers' data.");
-            c1.displayCustomersData(true);
-        } else {
+        if (r1.checkIfAdmin(username, password)) {
             System.out.println("Logged in successfully as \"" + username + "\". You can perform CRUD operations.");
-            performAdminActions(c1, read1, desiredOption);
+            adminOperations(flightManager, flightReservation, customerManager, read1);
+        } else {
+            System.out.println("ERROR! Unable to login. Try creating new credentials or register by pressing 4.");
         }
     }
 
-    // Perform Admin Actions
-    static void performAdminActions(Customer c1, Scanner read1, int desiredOption) {
+    // Admin Operations: CRUD (Create, Read, Update, Delete) for passengers and flights
+    static void adminOperations(FlightManager flightManager, FlightReservation flightReservation, CustomerManager customerManager, Scanner read1) {
+        int desiredOption;
         do {
             System.out.println("\n2nd Layer Menu");
             System.out.println("1. Add New Passenger");
@@ -97,42 +101,40 @@ public class Main {
 
             switch (desiredOption) {
                 case 1:
-                    c1.addNewCustomer();
+                    customerManager.addNewCustomer(read1);
                     break;
                 case 2:
-                    c1.displayCustomersData(false);
-                    System.out.print("Enter the CustomerID to Search: ");
-                    String customerID = read1.nextLine();
-                    c1.searchUser(customerID);
+                    System.out.print("Enter Customer ID to Search: ");
+                    String searchID = read1.nextLine();
+                    customerManager.searchCustomer(searchID);
                     break;
                 case 3:
-                    c1.displayCustomersData(false);
-                    System.out.print("Enter the CustomerID to Update: ");
-                    String customerIdToUpdate = read1.nextLine();
-                    c1.editUserInfo(customerIdToUpdate);
+                    System.out.print("Enter Customer ID to Update: ");
+                    String updateID = read1.nextLine();
+                    customerManager.updateCustomer(updateID, read1);
                     break;
                 case 4:
-                    c1.displayCustomersData(false);
-                    System.out.print("Enter the CustomerID to Delete: ");
-                    String customerIdToDelete = read1.nextLine();
-                    c1.deleteUser(customerIdToDelete);
+                    System.out.print("Enter Customer ID to Delete: ");
+                    String deleteID = read1.nextLine();
+                    customerManager.deleteCustomer(deleteID);
                     break;
                 case 5:
-                    c1.displayCustomersData(false);
+                    customerManager.displayAllCustomers();
                     break;
                 case 6:
-                    System.out.print("Enter the UserID to display flights registered: ");
+                    System.out.print("Enter UserID to display flights: ");
                     String userID = read1.nextLine();
-                    System.out.println("Displaying flights for user ID: " + userID);
+                    flightReservation.displayFlightsRegisteredByOneUser(userID);
                     break;
                 case 7:
-                    System.out.print("Enter the Flight Number to display registered passengers: ");
-                    String flightNumber = read1.nextLine();
-                    System.out.println("Displaying registered passengers for flight: " + flightNumber);
+                    System.out.print("Enter Flight Number to display registered passengers: ");
+                    String flightNum = read1.nextLine();
+                    flightReservation.displayRegisteredUsersForASpecificFlight(flightNum);
                     break;
                 case 8:
-                    System.out.print("Enter the Flight Number to delete: ");
-                    String flightToDelete = read1.nextLine();
+                    System.out.print("Enter Flight Number to Delete: ");
+                    String flightDelete = read1.nextLine();
+                    flightManager.deleteFlight(flightDelete);
                     break;
                 case 0:
                     System.out.println("Logged out successfully.");
@@ -143,29 +145,26 @@ public class Main {
         } while (desiredOption != 0);
     }
 
-    // Admin Registration Method
+    // Admin Registration
     static void adminRegistration(RolesAndPermissions r1, Scanner read1, int countNumOfUsers) {
         System.out.print("\nEnter the UserName to Register: ");
         String username = read1.nextLine();
         System.out.print("Enter the Password to Register: ");
         String password = read1.nextLine();
-        while (r1.isPrivilegedUserOrNot(username, password) != -1) {
+        while (r1.checkIfAdmin(username, password)) {
             System.out.println("ERROR! Admin with the same username already exists. Enter new Username.");
             username = read1.nextLine();
             System.out.print("Enter the Password Again: ");
             password = read1.nextLine();
         }
 
-        // Setting the credentials
-        adminUserNameAndPassword[countNumOfUsers][0] = username;
-        adminUserNameAndPassword[countNumOfUsers][1] = password;
-
+        r1.addAdmin(username, password);
         countNumOfUsers++;
         System.out.println("Admin registered successfully.");
     }
 
-    // Passenger Login Method
-    static void passengerLogin(RolesAndPermissions r1, FlightReservation bookingAndReserving, Customer c1, Scanner read1) {
+    // Passenger Login
+    static void passengerLogin(RolesAndPermissions r1, FlightManager flightManager, FlightReservation flightReservation, Scanner read1) {
         System.out.print("Enter the Email to Login: ");
         String email = read1.nextLine();
         System.out.print("Enter the Password: ");
@@ -190,26 +189,31 @@ public class Main {
 
                 switch (desiredChoice) {
                     case 1:
-                        bookingAndReserving.bookFlight("FL123", 2, new Customer());
+                        flightManager.displayFlightSchedule();
+                        System.out.print("Enter flight number: ");
+                        String flightNumToBook = read1.nextLine();
+                        System.out.print("Enter number of tickets: ");
+                        int ticketsToBook = read1.nextInt();
+                        flightReservation.bookFlight(flightNumToBook, ticketsToBook, new Customer());
                         break;
                     case 2:
-                        c1.editUserInfo(result[1]);
+                        // Update passenger info
                         break;
                     case 3:
                         System.out.println("Are you sure you want to delete your account? Enter Y/y to confirm.");
                         char confirmation = read1.nextLine().charAt(0);
                         if (confirmation == 'Y' || confirmation == 'y') {
-                            c1.deleteUser(result[1]);
+                            // Delete account logic
                         }
                         break;
                     case 4:
-                        System.out.println("Displaying flight schedule...");
+                        flightManager.displayFlightSchedule();
                         break;
                     case 5:
-                        bookingAndReserving.cancelFlight(result[1]);
+                        // Cancel flight logic
                         break;
                     case 6:
-                        bookingAndReserving.displayFlightsRegisteredByOneUser(result[1]);
+                        // Display registered flights
                         break;
                     case 0:
                         System.out.println("Logged out successfully.");

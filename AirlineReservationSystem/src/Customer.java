@@ -29,6 +29,10 @@ public class Customer {
         this.flightsRegisteredByUser = new ArrayList<>();
     }
 
+    public List<Customer> getCustomersCollection(){
+        return this.customerCollection;
+    }
+
     public void addNewCustomer() {
         Scanner read = new Scanner(System.in);
         System.out.println("Enter your name:");
@@ -63,7 +67,7 @@ public class Customer {
         return random.getRandomNumber().toString();
     }
 
-    public List<Customer> getCustomerCollection() {
+    public static List<Customer> getCustomerCollection() {
         return customerCollection;
     }
 
