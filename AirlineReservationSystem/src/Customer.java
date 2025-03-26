@@ -29,10 +29,6 @@ public class Customer {
         this.flightsRegisteredByUser = new ArrayList<>();
     }
 
-    public List<Customer> getCustomersCollection(){
-        return this.customerCollection;
-    }
-
     public void addNewCustomer() {
         Scanner read = new Scanner(System.in);
         System.out.println("Enter your name:");
@@ -59,6 +55,7 @@ public class Customer {
         Customer newCustomer = new Customer(name, email, password, phone, address, age);
         customerCollection.add(newCustomer);
         System.out.println("Customer added successfully.");
+        return newCustomer;
     }
 
     private String generateUserID() {
@@ -67,7 +64,7 @@ public class Customer {
         return random.getRandomNumber().toString();
     }
 
-    public static List<Customer> getCustomerCollection() {
+    public static List<Customer> getCustomersCollection() {
         return customerCollection;
     }
 

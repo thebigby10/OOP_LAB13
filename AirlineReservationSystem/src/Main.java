@@ -7,7 +7,7 @@ public class Main {
         RolesAndPermissions r1 = new RolesAndPermissions();
         FlightManager flightManager = new FlightManager();
         FlightReservation flightReservation = new FlightReservation();
-        Customer customerManager = new Customer();
+        CustomerManager customerManager = new CustomerManager();
         Scanner read = new Scanner(System.in);
 
         // Initialize some flight data
