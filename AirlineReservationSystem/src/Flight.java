@@ -3,14 +3,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Flight {
-    private final String flightNumber;
-    private final String fromCity;
-    private final String toCity;
+    private String flightNumber;
+    private String fromCity;
+    private String toCity;
     private int availableSeats;
-    private final String gate;
+    private String gate;
     private LocalDateTime departureTime;
     private List<Customer> registeredCustomers;
 
+    public Flight() {
+
+    }
     public Flight(String flightNumber, String fromCity, String toCity, int availableSeats, String gate) {
         this.flightNumber = flightNumber;
         this.fromCity = fromCity;

@@ -6,9 +6,14 @@ public class Main {
         int countNumOfUsers = 1;
         RolesAndPermissions r1 = new RolesAndPermissions();
         Flight f1 = new Flight();
+        FlightScheduler flightScheduler = new FlightScheduler();  // Create instance of FlightScheduler
         FlightReservation bookingAndReserving = new FlightReservation();
         Customer c1 = new Customer();
-        f1.flightScheduler();
+        
+        // Scheduling a flight using the FlightScheduler class
+        f1.setDepartureTime(flightScheduler.scheduleFlight(2));  // Schedule flight 2 days from now
+        System.out.println("Flight scheduled with departure time: " + f1.getDepartureTime());
+
         Scanner read = new Scanner(System.in);
 
         // Initial greeting and instructions

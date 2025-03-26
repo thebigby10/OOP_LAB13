@@ -3,7 +3,6 @@ import java.util.Calendar;
 import java.util.Random;
 
 public class FlightScheduler {
-
     public LocalDateTime scheduleFlight(int daysFromNow) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, daysFromNow);
