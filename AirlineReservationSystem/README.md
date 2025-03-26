@@ -19,11 +19,11 @@
 - move scheduling and distance logic from Flight class. (FlightScheduler class)
 - update FlightReservation class to use BookingManager 
 - create a FlightRepository to store flight related data
+- updated FlightManager to handle addFlight and booking/cancelling flight logic.
 
 #### RolesAndPermissions class related refactoing
 - seperate RolesAndPermissions classes into RoleManager and PermissionManager
 - refactor RolesAndPermissions to use RoleManager and PermissionManager
 
 #### Remaining refactor to ensure the behavour is unchagned
-- updated FlightManager to handle addFlight and booking/cancelling flight logic.
-- 
+- add the print statements for same user interface
