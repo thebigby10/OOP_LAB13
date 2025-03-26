@@ -25,4 +25,5 @@
 - refactor RolesAndPermissions to use RoleManager and PermissionManager
 
 #### Remaining refactor to ensure the behavour is unchagned
+- updated FlightManager to handle addFlight and booking/cancelling flight logic.
 - 
