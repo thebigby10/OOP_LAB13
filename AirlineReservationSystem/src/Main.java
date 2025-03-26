@@ -1,12 +1,23 @@
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        FlightScheduler scheduler = new FlightScheduler();
-        Flight flight = new Flight("AB123", "New York", "Los Angeles", 200, "G7");
-        flight.setDepartureTime(scheduler.scheduleFlight(2));
+        // Assuming customer collection is already populated
+        List<Customer> customers = Customer.getCustomersCollection();
 
-        Customer customer = new Customer("John Doe", "john@example.com", "password123", "555-1234", "123 Main St", 30);
+        // Creating RolesAndPermissions and UserAuthenticator instances
+        RolesAndPermissions rolesAndPermissions = new RolesAndPermissions();
         
-        FlightReservation flightReservation = new FlightReservation();
-        flightReservation.bookFlight("AB123", 2, customer);
+        String email = "john.doe@example.com";  // Example email
+        String password = "password123";  // Example password
+
+        // Authenticate the user and check if they are an admin
+        boolean isAdmin = rolesAndPermissions.authenticateAndCheckIfAdmin(email, password, customers);
+
+        if (isAdmin) {
+            System.out.println("User is an admin.");
+        } else {
+            System.out.println("User is not an admin or authentication failed.");
+        }
     }
 }

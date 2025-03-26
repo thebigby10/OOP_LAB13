@@ -1,11 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Customer {
 
-    private static final List<Customer> customerCollection = new ArrayList<>();
+    private static List<Customer> customerCollection = new ArrayList<>();
     private String userID;
     private String email;
     private String name;
@@ -58,6 +57,14 @@ public class Customer {
         RandomGenerator random = new RandomGenerator();
         random.randomIDGen();
         return random.getRandomNumber().toString();
+    }
+
+    public List<Customer> getCustomerCollection() {
+        return customerCollection;
+    }
+
+    public void setCustomerCollection(List<Customer> customerCollection) {
+        Customer.customerCollection = customerCollection;
     }
 
     public String getPassword(){
